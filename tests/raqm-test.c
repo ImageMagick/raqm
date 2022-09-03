@@ -1,6 +1,6 @@
 /*
  * Copyright © 2015 Information Technology Authority (ITA) <foss@ita.gov.om>
- * Copyright © 2016 Khaled Hosny <khaledhosny@eglug.org>
+ * Copyright © 2016-2022 Khaled Hosny <khaled@aliftype.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,10 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <assert.h>
+#include <errno.h>
 #include <locale.h>
+#include <string.h>
 
 #include <hb.h>
 
@@ -47,6 +45,39 @@ static int invisible_glyph = 0;
 /* Special exit code, recognized by automake that we're skipping a test. */
 static const int skip_exit_status = 77;
 
+static char*
+encode_bytes (const char *bytes)
+{
+  char *s = (char *) bytes;
+  char *p;
+  char *ret = (char *) malloc (strlen (bytes) + 1);
+  char *r = ret;
+
+  while (s && *s)
+  {
+    while (*s && strchr (" ", *s))
+      s++;
+    if (!*s)
+      break;
+
+    errno = 0;
+    unsigned char b = strtoul (s, &p, 16);
+    if (errno || s == p)
+    {
+      free (ret);
+      return NULL;
+    }
+
+    *r++ = b;
+
+    s = p;
+  }
+
+  *r = '\0';
+
+  return ret;
+}
+
 static bool
 parse_args (int argc, char **argv)
 {
@@ -54,7 +85,9 @@ parse_args (int argc, char **argv)
   while (i < argc)
   {
     if (strcmp (argv[i], "--text") == 0)
-      text = argv[++i];
+      text = strdup (argv[++i]);
+    else if (strcmp (argv[i], "--bytes") == 0)
+      text = encode_bytes (argv[++i]);
     else if (strcmp (argv[i], "--font") == 0)
       font = argv[++i];
     else if (strcmp (argv[i], "--fonts") == 0)
@@ -212,6 +245,7 @@ main (int argc, char **argv)
   if (position)
     assert (raqm_position_to_index (rq, position, 0, &start_index));
 
+  free (text);
   raqm_destroy (rq);
   FT_Done_Face (face);
   FT_Done_FreeType (library);
