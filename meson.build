@@ -1,9 +1,10 @@
 project('raqm', 'c',
-  version : '0.9.0',
+  version : '0.10.0',
   default_options : [
     'c_std=c99',
     'cpp_std=c++11',
   ],
+  meson_version: '>= 0.56.0',
 )
 
 raqm_version = meson.project_version().split('.')

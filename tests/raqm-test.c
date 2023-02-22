@@ -21,7 +21,9 @@
  * SOFTWARE.
  *
  */
-
+#ifdef __GNUC__ 
+#define  _DEFAULT_SOURCE
+#endif
 #include <assert.h>
 #include <errno.h>
 #include <locale.h>
@@ -38,6 +40,8 @@ static char *languages = NULL;
 static char *direction = NULL;
 static char *features = NULL;
 static char *require = NULL;
+static char *letterspacing = NULL;
+static char *wordspacing = NULL;
 static int cluster = -1;
 static int position = -1;
 static int invisible_glyph = 0;
@@ -98,6 +102,10 @@ parse_args (int argc, char **argv)
       direction = argv[++i];
     else if (strcmp (argv[i], "--font-features") == 0)
       features = argv[++i];
+    else if (strcmp (argv[i], "--letter-spacing") == 0)
+      letterspacing = argv[++i];
+    else if (strcmp (argv[i], "--word-spacing") == 0)
+      wordspacing = argv[++i];
     else if (strcmp (argv[i], "--require") == 0)
       require = argv[++i];
     else if (strcmp (argv[i], "--cluster") == 0)
@@ -226,6 +234,30 @@ main (int argc, char **argv)
       assert (raqm_add_font_feature (rq, tok, -1));
   }
 
+  if (letterspacing)
+  {
+    for (char *tok = strtok (letterspacing, ","); tok; tok = strtok (NULL, ","))
+    {
+      int spacing = atoi (tok);
+      int start, length;
+      start = atoi (strtok (NULL, ","));
+      length = atoi (strtok (NULL, ","));
+      assert (raqm_set_letter_spacing_range (rq, spacing, start, length));
+    }
+  }
+
+  if (wordspacing)
+  {
+    for (char *tok = strtok (wordspacing, ","); tok; tok = strtok (NULL, ","))
+    {
+      int spacing = atoi (tok);
+      int start, length;
+      start = atoi (strtok (NULL, ","));
+      length = atoi (strtok (NULL, ","));
+      assert (raqm_set_word_spacing_range (rq, spacing, start, length));
+    }
+  }
+
   if (invisible_glyph)
   {
     assert (raqm_set_invisible_glyph (rq, invisible_glyph));
@@ -241,7 +273,7 @@ main (int argc, char **argv)
     index = cluster;
     assert (raqm_index_to_position (rq, &index, &x, &y));
   }
-  
+
   if (position)
     assert (raqm_position_to_index (rq, position, 0, &start_index));
 
