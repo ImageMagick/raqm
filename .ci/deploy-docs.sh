@@ -11,7 +11,11 @@ git config user.email "ci@raqm.org"
 git fetch origin
 git checkout -b gh-pages -t origin/gh-pages
 
-cp build/docs/html/* .
+ls *
+
+rm -rf subprojects
+
+cp -v build/docs/html/* .
 rm -rf build
 ls *
 git add -A .
