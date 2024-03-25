@@ -1,0 +1,25 @@
+[STATIC]
+
+[LICENSE]
+COPYING
+
+[DEFINES_LIB]
+FRIBIDI_LIB_STATIC
+
+[DIRECTORIES]
+src
+
+[INCLUDES]
+freetype->include
+fribidi->lib
+harfbuzz->src
+
+[DEPENDENCIES]
+fribidi
+harfbuzz
+
+[CONFIG_DEFINE]
+/*
+  Define to use the raqm library
+*/
+#define MAGICKCORE_RAQM_DELEGATE
