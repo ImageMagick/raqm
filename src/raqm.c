@@ -595,9 +595,9 @@ _raqm_get_utf16_codepoint (const void *str,
 {
   const uint16_t *s = (const uint16_t *)str;
 
-  if (s[0] > 0xD800 && s[0] < 0xDBFF)
+  if (s[0] >= 0xD800 && s[0] <= 0xDBFF)
   {
-    if (s[1] > 0xDC00 && s[1] < 0xDFFF)
+    if (s[1] >= 0xDC00 && s[1] <= 0xDFFF)
     {
       uint32_t X = ((s[0] & ((1 << 6) -1)) << 10) | (s[1] & ((1 << 10) -1));
       uint32_t W = (s[0] >> 6) & ((1 << 5) - 1);
@@ -1110,12 +1110,12 @@ _raqm_set_spacing (raqm_t *rq,
       {
         if (_raqm_allowed_grapheme_boundary (rq->text[i], rq->text[i+1]))
         {
-          /* CSS word seperators, word spacing is only applied on these.*/
+          /* CSS word separators, word spacing is only applied on these.*/
           if (rq->text[i] == 0x0020  || /* Space */
               rq->text[i] == 0x00A0  || /* No Break Space */
               rq->text[i] == 0x1361  || /* Ethiopic Word Space */
-              rq->text[i] == 0x10100 || /* Aegean Word Seperator Line */
-              rq->text[i] == 0x10101 || /* Aegean Word Seperator Dot */
+              rq->text[i] == 0x10100 || /* Aegean Word Separator Line */
+              rq->text[i] == 0x10101 || /* Aegean Word Separator Dot */
               rq->text[i] == 0x1039F || /* Ugaric Word Divider */
               rq->text[i] == 0x1091F)   /* Phoenician Word Separator */
           {
