@@ -1,0 +1,9 @@
+EXPORTS
+raqm_add_font_feature
+raqm_create
+raqm_get_glyphs
+raqm_destroy
+raqm_layout
+raqm_set_freetype_face
+raqm_set_par_direction
+raqm_set_text_utf8
