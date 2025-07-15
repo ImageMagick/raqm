@@ -1,24 +1,28 @@
-[STATIC]
+[DYNAMIC_LIBRARY]
 
 [LICENSE]
 COPYING
 
-[DEFINES_LIB]
+[STATIC_DEFINES]
 FRIBIDI_LIB_STATIC
 
-[DIRECTORIES]
-src
+[INCLUDE_ARTIFACTS]
+src\raqm.h -> .
+src\raqm-version.h -> .
 
-[INCLUDES]
-freetype->include
-fribidi->lib
-harfbuzz->src
+[MODULE_DEFINITION_FILE]
+.ImageMagick\raqm.def
 
-[DEPENDENCIES]
+[EXCLUDES]
+subprojects\
+tests\
+
+[REFERENCES]
+freetype
 fribidi
 harfbuzz
 
-[CONFIG_DEFINE]
+[MAGICK_BASECONFIG_DEFINE]
 /*
   Define to use the raqm library
 */
