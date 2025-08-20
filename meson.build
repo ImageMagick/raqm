@@ -1,7 +1,7 @@
 project(
     'raqm',
     'c',
-    version: '0.10.2',
+    version: '0.10.3',
     default_options: [
         'c_std=c99',
         'cpp_std=c++11',
@@ -78,6 +78,12 @@ if get_option('sheenbidi')
         'sheenbidi',
         fallback: ['sheenbidi', 'sheenbidi_dep'],
     )
+    if sheenbidi.version().version_compare('>= 2.9')
+        sheenbidi = declare_dependency(
+            compile_args: ['-DRAQM_SHEENBIDI_GT_2_9'],
+            dependencies: sheenbidi
+        )
+    endif
 else
     fribidi = dependency(
         'fribidi',
