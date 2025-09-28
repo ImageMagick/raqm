@@ -1,5 +1,23 @@
 [DYNAMIC_LIBRARY]
 
+[VERSION]
+0.10.3
+
+[RELEASE_DATE]
+2025-08-05
+
+[PRODUCT_NAME]
+libraqm
+
+[COMPANY_NAME]
+Information Technology Authority (ITA)
+
+[URL]
+https://github.com/HOST-Oman/libraqm
+
+[COPYRIGHT]
+Copyright © 2015 Information Technology Authority (ITA)
+
 [LICENSE_FILE]
 COPYING
 
