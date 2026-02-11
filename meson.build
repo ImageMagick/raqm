@@ -1,7 +1,7 @@
 project(
     'raqm',
     'c',
-    version: '0.10.3',
+    version: '0.10.4',
     default_options: [
         'c_std=c99',
         'cpp_std=c++11',
@@ -96,7 +96,9 @@ endif
 deps = [freetype, harfbuzz, fribidi, sheenbidi]
 
 subdir('src')
-subdir('tests')
+if get_option('tests')
+    subdir('tests')
+endif
 if get_option('docs')
     subdir('docs')
 endif
